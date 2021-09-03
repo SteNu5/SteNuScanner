@@ -8,7 +8,9 @@ For installation you just have to copy it to your system, run the install script
 The scan options can be given via the main menu or via command line arguments (for command line arguments just add the arguments with spaces behind the programm call).
 
 Example: 
+
 python ./scanner.py http://localhost:8000 2 1 1 (call with command line arguments)
+
 python ./scanner.py (main menu)
 
 Good Luck testing and there is always a possibility that bugs are included.
