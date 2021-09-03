@@ -6,6 +6,7 @@ from cmdinjection import cmdinjection
 from phpinjection import phpinjection
 
 import requests
+import sys
 from datetime import datetime
 
 #selenium
@@ -269,10 +270,25 @@ class scanner():
 
 
 #starting point of the scanner
-url = input("Enter URL to scan: \n")
-level = input("Enter the attack level (1=more false positives, 2=try to avoid false positives (default), \n3=2 with additional time-based SQL-Injection-Attacks (Can crash websites)):\n")
-crawl = input("Enter the crawler (1=html (default), 2=selenium(firefox), 3=html+selenium(firefox), 4=selenium(chrome), \n5=selenium(firefox) windowless, 6=selenium(chrome) windowless:\n")
-seleniumChoice = input("Enter the attack methode (1=python requests (default), 2= firefox selenium , \n3 = chrome selenium , 4 = firefox selenium headless, 5 = chrome selenium headless): \n")
+url = ""
+level = ""
+crawl = ""
+seleniumChoice = ""
+
+if len(sys.argv) > 0:
+    if len(sys.argv) > 1:
+        url = str(sys.argv[1])
+    if len(sys.argv) > 2:
+        level = str(sys.argv[2])
+    if len(sys.argv) > 3:
+        crawl = str(sys.argv[3])
+    if len(sys.argv) > 4:
+        seleniumChoice = str(sys.argv[4])  
+else:
+    url = input("Enter URL to scan: \n")
+    level = input("Enter the attack level (1=more false positives, 2=try to avoid false positives (default), \n3=2 with additional time-based SQL-Injection-Attacks (Can crash websites)):\n")
+    crawl = input("Enter the crawler (1=html (default), 2=selenium(firefox), 3=html+selenium(firefox), 4=selenium(chrome), \n5=selenium(firefox) windowless, 6=selenium(chrome) windowless:\n")
+    seleniumChoice = input("Enter the attack methode (1=python requests (default), 2= firefox selenium , \n3 = chrome selenium , 4 = firefox selenium headless, 5 = chrome selenium headless): \n")
 
 #check if it is an url
 if url == "":
@@ -282,6 +298,12 @@ else:
         if not url.startswith("https://"):
             print("Your url has to start with 'http'")
             exit()
+            
+try:
+    requests.get(url = url)
+except Exception as e:
+    print("Given URL is not available! \nErrormessage:\n", e)
+    exit()
     
 #check the given level     
 if level == "":
@@ -303,9 +325,9 @@ if seleniumChoice == "":
     seleniumChoice = 1
 else:
     if seleniumChoice != "1" and seleniumChoice != "2"  and seleniumChoice != "3"  and seleniumChoice != "4" and seleniumChoice != "5":
-        print("You have to choose a attack methode option (0, 1, 2, 3, 4 or 5)")
+        print("You have to choose a attack methode option (1, 2, 3, 4 or 5)")
         exit()
-        
+            
 level = int(level)
 crawl = int(crawl)
 seleniumChoice = int(seleniumChoice)
